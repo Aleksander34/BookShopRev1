@@ -4,6 +4,7 @@ using BookShop.Core.Models;
 using BookShop.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace BookShop.Controllers
 {
@@ -50,6 +51,23 @@ namespace BookShop.Controllers
             _context.Books.Update(book);
             _context.SaveChanges();
             return Ok($"Book {book.Id} updated");
+        }
+
+        [HttpPost("[action]")]
+        public IActionResult GetPreviewBooks(IFormFile input)
+        {
+            string pathToFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (!System.IO.Directory.Exists(Path.Combine(pathToFolder, "TemporaryStorage")))
+            {
+                Directory.CreateDirectory(Path.Combine(pathToFolder, "TemporaryStorage"));
+            }
+
+            string pathToFile = Path.Combine(pathToFolder, "TemporaryStorage", input.FileName);
+            using (var stream = System.IO.File.Create(pathToFile))
+            {
+                input.CopyTo(stream);
+            }
+            return Ok();
         }
     }
 }

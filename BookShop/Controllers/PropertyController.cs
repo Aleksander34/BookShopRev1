@@ -8,7 +8,7 @@ namespace BookShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PropertyController : ControllerBase
+    public class PropertyController : BookShopController
     {
         private readonly BookShopContext _context;
         private readonly IMapper _mapper;

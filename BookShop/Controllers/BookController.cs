@@ -2,6 +2,7 @@
 using BookShop.Core;
 using BookShop.Core.Models;
 using BookShop.Dto;
+using BookShop.Excel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
@@ -54,7 +55,7 @@ namespace BookShop.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult GetPreviewBooks(IFormFile input)
+        public IActionResult GetPreviewBooks([FromForm]IFormFile input)
         {
             string pathToFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (!System.IO.Directory.Exists(Path.Combine(pathToFolder, "TemporaryStorage")))
@@ -67,7 +68,9 @@ namespace BookShop.Controllers
             {
                 input.CopyTo(stream);
             }
-            return Ok();
+            var result = ExcelParcerUtil.ParseBook(pathToFile);
+            System.IO.File.Delete(pathToFile);
+            return Ok(result);
         }
     }
 }

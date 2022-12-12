@@ -38,7 +38,7 @@ namespace BookShop.Excel
             result.Title= worksheet.Cells[$"A{row}"].Value.ToString().Trim();
             result.Description = worksheet.Cells[$"B{row}"].Value.ToString().Trim();
             result.PublishedOn = DateTime.Parse(worksheet.Cells[$"C{row}"].Value.ToString().Trim());
-            result.Publisher = worksheet.Cells[$"D{row}"].Value.ToString().Trim();
+            result.Category = worksheet.Cells[$"D{row}"].Value.ToString().Trim();
             result.ImageUrl = worksheet.Cells[$"E{row}"].Value.ToString().Trim();
             result.Price = decimal.Parse(worksheet.Cells[$"G{row}"].Value.ToString().Trim());
             return result;

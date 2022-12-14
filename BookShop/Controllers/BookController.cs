@@ -25,7 +25,8 @@ namespace BookShop.Controllers
         {
             var books = _context.Books.ToList();
             var result = _mapper.Map<IEnumerable<BookDto>>(books);
-            return Ok(result);
+
+            return Ok(new { data = result,recordsTotal=1});
         }
 
         [HttpPost("[action]")]

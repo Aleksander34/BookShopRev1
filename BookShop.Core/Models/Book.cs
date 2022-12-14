@@ -19,7 +19,7 @@ namespace BookShop.Core.Models
 
         public override string ToString()
         {
-            return $"{{ Заголовок: {Title}, Описание: {Description} Опубликованно: {PublishedOn}, Издатель: {Publisher}, Цена: {Price}, Ссылка: {ImageUrl}, Id cвойства: {PropertyId}}}";
+            return $"{{ Заголовок: {Title}, Описание: {Description} Опубликованно: {PublishedOn}, Издатель: {Category}, Цена: {Price}, Ссылка: {ImageUrl}, Id cвойства: {PropertyId}}}";
         }
     }
 }

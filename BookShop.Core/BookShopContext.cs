@@ -5,6 +5,7 @@ namespace BookShop.Core
 {
     public class BookShopContext : DbContext
     {
+        public DbSet<User> Users { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookAuthor> BookAuthors { get; set; }

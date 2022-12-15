@@ -20,13 +20,19 @@ namespace BookShop.Controllers
             _context = context;
             _mapper = mapper;
         }
-        [HttpGet("[action]")]
-        public IActionResult GetAll()
+        [HttpPost("[action]")]
+        public IActionResult GetAll(PagedRequestDto input)
         {
-            var books = _context.Books.ToList();
+            var totalCount = _context.Books.Count();
+
+            var books = _context.Books
+                .Skip(input.SkipCount)
+                .Take(input.CountOnPage)
+                .ToList();
+
             var result = _mapper.Map<IEnumerable<BookDto>>(books);
 
-            return Ok(new { data = result,recordsTotal=1});
+            return Ok(new { data = result,recordsTotal=totalCount,recordsFiltered = totalCount});
         }
 
         [HttpPost("[action]")]

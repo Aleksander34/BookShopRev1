@@ -6,7 +6,9 @@ namespace BookShop.Dto
     [AutoMap(typeof(Book), ReverseMap = true)]
     public class BookDto : EntityDto
     {
-        public ICollection<AuthorDto> Authors { get; set; } // Это не выводится но может быть в запросе использовано при связывании
+        public string Authors { get; set; }
+        public int Stars { get; set; }
+        public PropertyDto Property { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime PublishedOn { get; set; }

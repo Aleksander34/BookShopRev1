@@ -3,11 +3,10 @@ using BookShop.Core.Models;
 
 namespace BookShop.Dto
 {
-    [AutoMap(typeof(Book), ReverseMap = true)]
     public class BookDto : EntityDto
     {
         public string Authors { get; set; }
-        public int Stars { get; set; }
+        public int AvgStars { get; set; } //
         public PropertyDto Property { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

@@ -17,12 +17,22 @@ namespace BookShop.Controllers
             _context = context;
             _mapper = mapper;
         }
-        [HttpGet("[action]")]
-        public IActionResult GetAll()
+        [HttpPost("[action]")]
+        public IActionResult GetAll(GetAllReviewsDto input)
         {
-            var reviews = _context.Reviews.ToList();
+            var totalCount = _context.Reviews
+                .Where(x=>x.BookId == input.BookId)
+                .Count();
+
+            var reviews = _context.Reviews
+                .Where(x=>x.BookId == input.BookId)
+                .Skip(input.SkipCount)
+                .Take(input.CountOnPage)
+                .ToList();
+
             var result = _mapper.Map<IEnumerable<ReviewDto>>(reviews);
-            return Ok(result);
+
+            return Ok(new { data = result, recordsTotal = totalCount, recordsFiltered = totalCount }); 
         }
 
         [HttpPost("[action]")]

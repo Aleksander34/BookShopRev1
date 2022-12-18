@@ -5,6 +5,7 @@ using BookShop.Dto;
 using BookShop.Excel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace BookShop.Controllers
@@ -21,11 +22,22 @@ namespace BookShop.Controllers
             _mapper = mapper;
         }
         [HttpPost("[action]")]
-        public IActionResult GetAll(PagedRequestDto input)
+        public IActionResult GetAll(GetAllBookDto input)
         {
-            var totalCount = _context.Books.Count();
+            IQueryable<Book> querry = _context.Books;
 
-            var books = _context.Books
+            if (!string.IsNullOrWhiteSpace(input.BookTitle))
+            {
+                querry = querry.Where(x => x.Title.ToLower().Contains(input.BookTitle.ToLower()));
+            }
+
+            var totalCount = querry.Count();
+
+            var books = querry
+                .Include(x=>x.BookAuthors)
+                .ThenInclude(y=>y.Author)
+                .Include(p=>p.Property)
+                .Include(t=>t.Reviews)
                 .Skip(input.SkipCount)
                 .Take(input.CountOnPage)
                 .ToList();

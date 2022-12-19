@@ -8,7 +8,7 @@ namespace BookShop.Dto
     {
         //public BookDto Book { get; set; } Это не выводится но может быть в запросе при связывании использовано
         public int BookId { get; set; }
-        public string Name { get; set; }
+        public int UserId { get; set; }
         public int NumStars { get; set; }
         public string Comment { get; set; }
     }

@@ -30,6 +30,10 @@ namespace BookShop.Controllers
             {
                 querry = querry.Where(x => x.Title.ToLower().Contains(input.BookTitle.ToLower()));
             }
+            if (!string.IsNullOrWhiteSpace(input.AuthorName))
+            {
+                querry = querry.Where(x => x.BookAuthors.Any(y=>y.Author.Name.ToLower().Contains(input.AuthorName.ToLower())));
+            }
 
             var totalCount = querry.Count();
 

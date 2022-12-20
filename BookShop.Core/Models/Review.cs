@@ -6,7 +6,7 @@ namespace BookShop.Core.Models
     {
         public int NumStars { get; set; }
         public string Comment { get; set; }
-        public int UserId { get; set; }  //TODO:
+        public int UserId { get; set; }
         [ForeignKey("UserId")]
         public User User { get; set; }
 

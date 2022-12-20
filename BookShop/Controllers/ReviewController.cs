@@ -3,6 +3,7 @@ using BookShop.Core;
 using BookShop.Core.Models;
 using BookShop.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookShop.Controllers
 {
@@ -25,6 +26,7 @@ namespace BookShop.Controllers
                 .Count();
 
             var reviews = _context.Reviews
+                .Include(x=>x.User)
                 .Where(x=>x.BookId == input.BookId)
                 .Skip(input.SkipCount)
                 .Take(input.CountOnPage)

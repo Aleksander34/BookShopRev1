@@ -3,5 +3,6 @@
     public class GetAllBookDto : PagedRequestDto
     {
         public string BookTitle { get; set; }
+        public string AuthorName { get; set; }
     }
 }

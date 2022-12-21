@@ -34,6 +34,18 @@ namespace BookShop.Controllers
             {
                 querry = querry.Where(x => x.BookAuthors.Any(y=>y.Author.Name.ToLower().Contains(input.AuthorName.ToLower())));
             }
+            if (input.PublishedDateStart.HasValue)
+            {
+                if (input.PublishedDateEnd.HasValue)
+                {
+                    querry = querry.Where(x => x.PublishedOn <= input.PublishedDateEnd && x.PublishedOn>=input.PublishedDateStart);
+
+                }
+                else
+                {
+                    querry = querry.Where(x => x.PublishedOn == input.PublishedDateStart);
+                }
+            }
 
             var totalCount = querry.Count();
 

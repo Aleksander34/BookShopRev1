@@ -46,6 +46,17 @@ namespace BookShop.Controllers
                     querry = querry.Where(x => x.PublishedOn == input.PublishedDateStart);
                 }
             }
+            if (input.PriceStart.HasValue )
+            {
+                if (input.PriceEnd.HasValue)
+                {
+                    querry = querry.Where(x => x.Price <= input.PriceEnd && x.Price>=input.PriceStart);
+                }
+                else
+                {
+                    querry = querry.Where(x => x.Price >= input.PriceStart);
+                }
+            }
 
             var totalCount = querry.Count();
 

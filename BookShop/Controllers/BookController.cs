@@ -34,28 +34,32 @@ namespace BookShop.Controllers
             {
                 querry = querry.Where(x => x.BookAuthors.Any(y=>y.Author.Name.ToLower().Contains(input.AuthorName.ToLower())));
             }
-            if (input.PublishedDateStart.HasValue)
+            if (DateTime.TryParse(input.PublishedDateStart, out DateTime dateStart))
             {
-                if (input.PublishedDateEnd.HasValue)
+                if (DateTime.TryParse(input.PublishedDateEnd, out DateTime dateEnd))
                 {
-                    querry = querry.Where(x => x.PublishedOn <= input.PublishedDateEnd && x.PublishedOn>=input.PublishedDateStart);
+                    querry = querry.Where(x => x.PublishedOn <= dateEnd && x.PublishedOn >= dateStart);
 
                 }
                 else
                 {
-                    querry = querry.Where(x => x.PublishedOn == input.PublishedDateStart);
+                    querry = querry.Where(x => x.PublishedOn == dateStart);
                 }
             }
-            if (input.PriceStart.HasValue )
+            if (input.PriceStart.HasValue)
             {
                 if (input.PriceEnd.HasValue)
                 {
-                    querry = querry.Where(x => x.Price <= input.PriceEnd && x.Price>=input.PriceStart);
+                    querry = querry.Where(x => x.Price <= input.PriceEnd && x.Price >= input.PriceStart);
                 }
                 else
                 {
                     querry = querry.Where(x => x.Price >= input.PriceStart);
                 }
+            }
+            if (!string.IsNullOrWhiteSpace(input.Category))
+            {
+                querry = querry.Where(x => x.Category == input.Category);
             }
 
             var totalCount = querry.Count();
@@ -116,6 +120,13 @@ namespace BookShop.Controllers
             }
             var result = ExcelParcerUtil.ParseBook(pathToFile);
             System.IO.File.Delete(pathToFile);
+            return Ok(result);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetCategories()
+        {
+            var result = _context.Books.Select(x => x.Category).Distinct().ToList();
             return Ok(result);
         }
     }

@@ -61,6 +61,12 @@ namespace BookShop.Controllers
             {
                 querry = querry.Where(x => x.Category == input.Category);
             }
+            if (!string.IsNullOrWhiteSpace(input.Search))
+            {
+                string search = input.Search.ToLower();
+                querry = querry.Where(x => x.Category.ToLower().Contains(search) || x.Title.ToLower().Contains(search) || x.BookAuthors.Any(y => y.Author.Name.ToLower().Contains(search)));
+            }
+
 
             var totalCount = querry.Count();
 
@@ -105,7 +111,7 @@ namespace BookShop.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult GetPreviewBooks([FromForm]IFormFile input)
+        public IActionResult AddBooks([FromForm]IFormFile input)
         {
             string pathToFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (!System.IO.Directory.Exists(Path.Combine(pathToFolder, "TemporaryStorage")))
@@ -120,6 +126,28 @@ namespace BookShop.Controllers
             }
             var result = ExcelParcerUtil.ParseBook(pathToFile);
             System.IO.File.Delete(pathToFile);
+
+            foreach (var bookDto in result.Books)
+            {
+                var book = _mapper.Map<Book>(bookDto);
+                foreach (var authorName in bookDto.Authors.Split(","))
+                {
+                    var author = _context.Authors.FirstOrDefault(x => x.Name == authorName);
+                    if (author == null)
+                    {
+                        author = new Author { Name = authorName };
+                        _context.Authors.Add(author);
+                        _context.SaveChanges();
+                    }
+                    book.BookAuthors.Add(new BookAuthor
+                    {
+                        AuthorId = author.Id
+                    });
+                }
+                _context.SaveChanges();
+            }
+            
+
             return Ok(result);
         }
 

@@ -9,5 +9,6 @@
         public decimal? PriceStart { get; set; }
         public decimal? PriceEnd { get; set; }
         public string Category { get; set; }
+        public string Search { get; set; }
     }
 }

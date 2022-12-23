@@ -10,13 +10,8 @@ namespace BookShop.Excel
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             var file = new FileInfo(pathToFile);
-            var result = new ExcelInputDto()
-            {
-                Books = new List<BookDto>(),
-                Properties = new List<PropertyDto>(),
-                Authors = new List<AuthorDto>(),
-            };
-
+            var result = new ExcelInputDto();
+            var books = new List<BookDto>();
             using (var excel = new ExcelPackage(file))
             {
                 var worksheet = excel.Workbook.Worksheets[1];
@@ -25,9 +20,7 @@ namespace BookShop.Excel
                     string end = worksheet.Cells[$"A{row}"].Value.ToString().Trim();
                     if (end == "End of typing")
                         break;
-                    result.Books.Add(GetBook(worksheet, row));
-                    result.Properties.Add(GetProperty(worksheet, row));
-                    result.Authors.Add(GetAuthor(worksheet, row));
+                    books.Add(GetBook(worksheet, row));
                 }
             }
             return result;
@@ -41,12 +34,8 @@ namespace BookShop.Excel
             result.Category = worksheet.Cells[$"D{row}"].Value.ToString().Trim();
             result.ImageUrl = worksheet.Cells[$"E{row}"].Value.ToString().Trim();
             result.Price = decimal.Parse(worksheet.Cells[$"F{row}"].Value.ToString().Trim());
-            return result;
-        }
-        static AuthorDto GetAuthor(ExcelWorksheet worksheet, int row)
-        {
-            var result = new AuthorDto();
-            result.Name = worksheet.Cells[$"G{row}"].Value.ToString().Trim();
+            result.Authors = worksheet.Cells[$"G{row}"].Value.ToString().Trim();
+            result.Property=GetProperty(worksheet, row);
             return result;
         }
         static PropertyDto GetProperty(ExcelWorksheet worksheet, int row)

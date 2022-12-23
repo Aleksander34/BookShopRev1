@@ -40,13 +40,13 @@ namespace BookShop.Excel
             result.PublishedOn = DateTime.Parse(worksheet.Cells[$"C{row}"].Value.ToString().Trim());
             result.Category = worksheet.Cells[$"D{row}"].Value.ToString().Trim();
             result.ImageUrl = worksheet.Cells[$"E{row}"].Value.ToString().Trim();
-            result.Price = decimal.Parse(worksheet.Cells[$"G{row}"].Value.ToString().Trim());
+            result.Price = decimal.Parse(worksheet.Cells[$"F{row}"].Value.ToString().Trim());
             return result;
         }
         static AuthorDto GetAuthor(ExcelWorksheet worksheet, int row)
         {
             var result = new AuthorDto();
-            result.Name = worksheet.Cells[$"F{row}"].Value.ToString().Trim();
+            result.Name = worksheet.Cells[$"G{row}"].Value.ToString().Trim();
             return result;
         }
         static PropertyDto GetProperty(ExcelWorksheet worksheet, int row)

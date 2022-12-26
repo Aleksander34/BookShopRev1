@@ -15,14 +15,14 @@ namespace BookShop.Excel
             using (var excel = new ExcelPackage(file))
             {
                 var worksheet = excel.Workbook.Worksheets[1];
-                for (int row = 3; ; row++) // начинаем с 3 строки и каждый раз увеличиваем на 1
+                for (int row = 3; row < worksheet.Dimension.End.Row ; row++) // начинаем с 3 строки и каждый раз увеличиваем на 1
                 {
-                    string end = worksheet.Cells[$"A{row}"].Value.ToString().Trim();
-                    if (end == "End of typing")
-                        break;
+                    
+
                     books.Add(GetBook(worksheet, row));
                 }
             }
+            result.Books=books;
             return result;
         }
         static BookDto GetBook(ExcelWorksheet worksheet, int row)

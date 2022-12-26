@@ -130,6 +130,7 @@ namespace BookShop.Controllers
             foreach (var bookDto in result.Books)
             {
                 var book = _mapper.Map<Book>(bookDto);
+                book.BookAuthors = new List<BookAuthor>();
                 foreach (var authorName in bookDto.Authors.Split(","))
                 {
                     var author = _context.Authors.FirstOrDefault(x => x.Name == authorName);
@@ -144,6 +145,7 @@ namespace BookShop.Controllers
                         AuthorId = author.Id
                     });
                 }
+                _context.Books.Add(book);
                 _context.SaveChanges();
             }
             

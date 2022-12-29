@@ -152,6 +152,35 @@ namespace BookShop.Controllers
 
             return Ok(result);
         }
+        public static object locker = new object();
+        [HttpPost("[action]")]
+        public IActionResult PreviewBooks([FromForm] IFormFile input)
+        {
+            string pathToFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (!System.IO.Directory.Exists(Path.Combine(pathToFolder, "TemporaryStorage")))
+            {
+                Directory.CreateDirectory(Path.Combine(pathToFolder, "TemporaryStorage"));
+            }
+            if (input == null)
+            {
+                return Ok();
+            }
+            string pathToFile = Path.Combine(pathToFolder, "TemporaryStorage", input.FileName);
+            ExcelInputDto result;
+            lock (locker)
+            {
+                System.IO.File.Delete(pathToFile);
+                using (var stream = System.IO.File.Create(pathToFile))
+                {
+                    input.CopyTo(stream);
+                }
+                result = ExcelParcerUtil.ParseBook(pathToFile);
+                System.IO.File.Delete(pathToFile);
+            }
+
+
+            return Ok(new { data = result.Books, recordsTotal = result.Books.Count(), recordsFiltered = result.Books.Count() });
+        }
 
         [HttpGet("[action]")]
         public IActionResult GetCategories()

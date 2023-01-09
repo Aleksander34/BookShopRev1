@@ -94,7 +94,7 @@ namespace BookShop.Controllers
             return Ok($"book {book.Id} added");
         }
         [HttpPost("[action]")]
-        public IActionResult Remove(int id)
+        public IActionResult Remove([FromQuery]int id)
         {
             var book = _context.Books.Find(id);
             _context.Books.Remove(book);

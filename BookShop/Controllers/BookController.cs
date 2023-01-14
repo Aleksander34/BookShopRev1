@@ -84,6 +84,21 @@ namespace BookShop.Controllers
             return Ok(new { data = result,recordsTotal=totalCount,recordsFiltered = totalCount});
         }
 
+        [HttpGet("[action]")]
+        public IActionResult Get(int id)
+        {
+            var books = _context.Books
+                .Include(x => x.BookAuthors)
+                .ThenInclude(y => y.Author)
+                .Include(p => p.Property)
+                .Include(t => t.Reviews)
+                .First(x=>x.Id==id);
+
+            var result = _mapper.Map<BookDto>(books);
+
+            return Ok(result);
+        }
+
         [HttpPost("[action]")]
         public IActionResult Create(BookDto input)
         {

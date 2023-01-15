@@ -36,7 +36,7 @@ namespace BookShop.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.Core.Models.Book", b =>
@@ -76,7 +76,7 @@ namespace BookShop.Core.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.Core.Models.BookAuthor", b =>
@@ -91,7 +91,7 @@ namespace BookShop.Core.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("BookAuthors");
+                    b.ToTable("BookAuthors", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.Core.Models.Property", b =>
@@ -116,7 +116,7 @@ namespace BookShop.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Properties");
+                    b.ToTable("Properties", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.Core.Models.Review", b =>
@@ -146,7 +146,7 @@ namespace BookShop.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.Core.Models.User", b =>
@@ -170,7 +170,7 @@ namespace BookShop.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.Core.Models.Book", b =>

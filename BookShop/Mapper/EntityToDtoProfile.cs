@@ -11,6 +11,8 @@ namespace BookShop.Mapper
             this.CreateMap<Book, BookDto>()
             .ForMember(x => x.Authors, y => y.MapFrom(p => string.Join(",", p.BookAuthors.Select(t => t.Author.Name))))
              .ForMember(x => x.AvgStars, y => y.MapFrom(p => Math.Round(p.Reviews.Average(a => a.NumStars),1)));
+
+            this.CreateMap<BookDto, Book>();
             this.CreateMap<Review, ReviewDto>()
                 .ForMember(x => x.UserName, y => y.MapFrom(p => p.User.Name));
         }

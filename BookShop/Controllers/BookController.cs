@@ -120,6 +120,29 @@ namespace BookShop.Controllers
         public IActionResult Update(BookDto input)
         {
             var book = _mapper.Map<Book>(input);
+            var bookAuthors = _context.BookAuthors.Where(x => x.BookId == book.Id);
+            foreach (var bookAuthor in bookAuthors)
+            {
+                _context.BookAuthors.Remove(bookAuthor);
+            }
+
+            var authors = input.Authors.Split(',');
+            foreach (var authorName in authors)
+            {
+                var author = _context.Authors.FirstOrDefault(x => x.Name == authorName);
+                if (author == null)
+                {
+                    author = new Author { Name = authorName };
+                    _context.Authors.Add(author);
+                    _context.SaveChanges();
+                }
+
+                _context.BookAuthors.Add(new BookAuthor
+                {
+                    BookId = book.Id,
+                    AuthorId = author.Id,
+                });
+            }
             _context.Books.Update(book);
             _context.SaveChanges();
             return Ok($"Book {book.Id} updated");

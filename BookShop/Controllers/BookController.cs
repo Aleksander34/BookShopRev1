@@ -226,5 +226,12 @@ namespace BookShop.Controllers
             var result = _context.Books.Select(x => x.Category).Distinct().ToList();
             return Ok(result);
         }
+
+        [HttpGet("[action]")]
+        public IActionResult GetBookOnDate()
+        {
+            var result = _context.Books.GroupBy(x => x.PublishedOn).Select(x => new {Published = x.Key.ToString("dd.MM.yyyy"), count = x.Count()});  
+            return Ok(result);
+        }
     }
 }

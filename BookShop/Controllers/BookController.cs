@@ -228,10 +228,28 @@ namespace BookShop.Controllers
         }
 
         [HttpGet("[action]")]
-        public IActionResult GetBookOnDate()
+        public IActionResult GetBookOnDate(PeriodType input)
         {
-            var result = _context.Books.GroupBy(x => x.PublishedOn).Select(x => new {Published = x.Key.ToString("dd.MM.yyyy"), count = x.Count()});  
-            return Ok(result);
+            switch (input)
+            {
+                case PeriodType.Day:
+                    {
+                        var result = _context.Books.GroupBy(x => x.PublishedOn).Select(x => new { Published = x.Key.ToString("dd.MM.yyyy"), Count = x.Count() });
+                        return Ok(result);
+                    }
+
+                case PeriodType.Month:
+                    {
+                        var result = _context.Books.GroupBy(x => x.PublishedOn)
+                            .Select(x => new { Published = x.Key, Count = x.Count() })
+                            .ToList()
+                            .GroupBy(x => x.Published.ToString("MM.yy")).Select(x => new { Published = x.Key, Count = x.Sum(y=>y.Count) });
+                        return Ok(result);
+                    }
+            }
+            return Ok();
+              
+            
         }
     }
 }

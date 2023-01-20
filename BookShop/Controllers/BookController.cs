@@ -238,6 +238,29 @@ namespace BookShop.Controllers
                         return Ok(result);
                     }
 
+                case PeriodType.Week:
+                    {
+                        var data = _context.Books.GroupBy(x => x.PublishedOn)
+                            .Select(x => new { Published = x.Key, Count = x.Count() })
+                            .ToList()
+                            .OrderBy(x=>x.Published)
+                            .ToList();
+                        var result = new List<PeriodChartDto>();
+                        var dateStart = new DateTime(data[0].Published.Year, data[0].Published.Month, 1);
+                        var dateEnd = new DateTime(data[data.Count-1].Published.Year, data[data.Count - 1].Published.Month, 1);
+
+                        for (; dateStart <= dateEnd; dateStart = dateStart.AddDays(7))
+                        {
+                            result.Add(new PeriodChartDto
+                            {
+                                Published = dateStart.ToString("dd.MM.yy") + "-" + dateStart.AddDays(6).ToString("dd.MM.yy"),
+                                Count = data.Where(x => x.Published >= dateStart && x.Published <= dateStart.AddDays(6)).Sum(y => y.Count)
+                            });
+                        }
+
+                        return Ok(result);
+                    }
+
                 case PeriodType.Month:
                     {
                         var result = _context.Books.GroupBy(x => x.PublishedOn)

@@ -3,6 +3,7 @@ using BookShop.Core;
 using BookShop.Core.Models;
 using BookShop.Dto;
 using BookShop.Excel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,8 @@ namespace BookShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
+    [Authorize]
     public class BookController : BookShopController
     {
         private readonly BookShopContext _context;

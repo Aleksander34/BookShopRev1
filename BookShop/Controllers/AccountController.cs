@@ -28,7 +28,8 @@ namespace BookShop.Controllers
         public IActionResult Login(AccountInput input)
         {
             string token = GetToken(input.Login, input.Password);
-            return Ok(token);
+            ClaimsIdentity identity = GetIdentity(input.Login, input.Password);
+            return Ok(new { Token=token, Name=identity.Name, Role=identity.RoleClaimType});
         }
 
         private string GetToken(string login, string password)

@@ -29,7 +29,7 @@ namespace BookShop.Controllers
         {
             string token = GetToken(input.Login, input.Password);
             ClaimsIdentity identity = GetIdentity(input.Login, input.Password);
-            return Ok(new { Token=token, Name=identity.Name, Role=identity.RoleClaimType});
+            return Ok(new { Token=token, Name=identity.Name, Role=identity.Claims.First(x=>x.Type== ClaimsIdentity.DefaultRoleClaimType).Value });
         }
 
         private string GetToken(string login, string password)
@@ -78,7 +78,7 @@ namespace BookShop.Controllers
             employee = _mapper.Map<User>(input);
             _context.Users.Add(employee);
             _context.SaveChanges();
-            return Ok("Аккаунт успешно создан");
+            return Login(new AccountInput { Login = employee.Name, Password = employee.Password });
         }
     }
 }

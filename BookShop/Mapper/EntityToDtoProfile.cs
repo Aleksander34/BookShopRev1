@@ -9,7 +9,7 @@ namespace BookShop.Mapper
         public EntityToDtoProfile() 
         {
             this.CreateMap<Book, BookDto>()
-            .ForMember(x => x.Authors, y => y.MapFrom(p => string.Join(",", p.BookAuthors.Select(t => t.Author.Name))))
+            //.ForMember(x => x.Authors, y => y.MapFrom(p => string.Join(",", p.BookAuthors.Select(t => t.Author.Name))))
              .ForMember(x => x.AvgStars, y => y.MapFrom(p => p.Reviews!=null&&p.Reviews.Any() ? Math.Round(p.Reviews.Average(a => a.NumStars),1):0));
 
             this.CreateMap<BookDto, Book>();

@@ -25,7 +25,7 @@ namespace BookShop.Controllers
             _mapper = mapper;
         }
         [HttpPost("[action]")]
-        public IActionResult GetAll(GetAllBookDto input)
+        public async Task<IActionResult> GetAllAsync(GetAllBookDto input)
         {
             IQueryable<Book> querry = _context.Books;
 
@@ -74,13 +74,17 @@ namespace BookShop.Controllers
             var totalCount = querry.Count();
 
             var books = querry
-                .Include(x=>x.BookAuthors)
-                .ThenInclude(y=>y.Author)
-                .Include(p=>p.Property)
-                .Include(t=>t.Reviews)
+                //.Include(x=>x.BookAuthors)
+                //.ThenInclude(y=>y.Author)
+                .Include(p => p.Property)
+                .Include(t => t.Reviews)
                 .Skip(input.SkipCount)
                 .Take(input.CountOnPage)
                 .ToList();
+            //foreach (var b in books)
+            //{
+            //    await _context.Entry(b).Collection(x => x.BookAuthors).LoadAsync();
+            //};
 
             var result = _mapper.Map<IEnumerable<BookDto>>(books);
 
@@ -115,6 +119,10 @@ namespace BookShop.Controllers
         public IActionResult Remove([FromQuery]int id)
         {
             var book = _context.Books.Find(id);
+            if (book == null)
+            {
+                return BadRequest("Не найдена книга с таким ID");
+            }
             _context.Books.Remove(book);
             _context.SaveChanges();
             return Ok($"Book {book.Id} удален ");

@@ -15,7 +15,7 @@ namespace BookShop.Core.Models
         [ForeignKey("PropertyId")]
         public Property Property { get; set; }
         public ICollection<Review> Reviews { get; set; }
-        public virtual ICollection<BookAuthor> BookAuthors { get; set; }
+        public ICollection<BookAuthor> BookAuthors { get; set; }
 
         public override string ToString()
         {

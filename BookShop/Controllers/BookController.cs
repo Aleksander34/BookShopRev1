@@ -74,19 +74,25 @@ namespace BookShop.Controllers
             var totalCount = querry.Count();
 
             var books = querry
-                //.Include(x=>x.BookAuthors)
-                //.ThenInclude(y=>y.Author)
                 .Include(p => p.Property)
                 .Include(t => t.Reviews)
                 .Skip(input.SkipCount)
                 .Take(input.CountOnPage)
+                .AsNoTracking()
                 .ToList();
-            //foreach (var b in books)
-            //{
-            //    await _context.Entry(b).Collection(x => x.BookAuthors).LoadAsync();
-            //};
+
 
             var result = _mapper.Map<IEnumerable<BookDto>>(books);
+
+            foreach (var b in result)
+            {
+                b.Authors = string.Join(",", _context.BookAuthors
+                    .Include(x => x.Author)
+                    .Where(x => x.BookId == b.Id)
+                    .AsNoTracking()
+                    .Select(x => x.Author.Name)
+                    .ToArray());
+            };
 
             return Ok(new { data = result,recordsTotal=totalCount,recordsFiltered = totalCount});
         }

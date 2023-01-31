@@ -67,7 +67,14 @@ namespace BookShop.Controllers
             if (!string.IsNullOrWhiteSpace(input.Search))
             {
                 string search = input.Search.ToLower();
-                querry = querry.Where(x => x.Category.ToLower().Contains(search) || x.Title.ToLower().Contains(search) || x.BookAuthors.Any(y => y.Author.Name.ToLower().Contains(search)));
+                var bookIds = _context.BookAuthors
+                    .Include(x => x.Author)
+                    .Where(y => y.Author.Name
+                    .ToLower().Contains(search))
+                    .AsNoTracking()
+                    .Select(i => i.BookId)
+                    .ToArray();
+                querry = querry.Where(x => x.Category.ToLower().Contains(search) || x.Title.ToLower().Contains(search) || bookIds.Contains(x.Id));
             }
 
 
@@ -101,13 +108,19 @@ namespace BookShop.Controllers
         public IActionResult Get(int id)
         {
             var books = _context.Books
-                .Include(x => x.BookAuthors)
-                .ThenInclude(y => y.Author)
                 .Include(p => p.Property)
                 .Include(t => t.Reviews)
                 .First(x=>x.Id==id);
 
             var result = _mapper.Map<BookDto>(books);
+
+            result.Authors = string.Join(",", _context.BookAuthors
+
+                .Include(x => x.Author)
+                .Where(x => x.BookId == result.Id)
+                .AsNoTracking()
+                .Select(x => x.Author.Name)
+                .ToArray());
 
             return Ok(result);
         }

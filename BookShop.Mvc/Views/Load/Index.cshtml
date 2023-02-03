@@ -1,0 +1,35 @@
+﻿<!-- Загрузка файла, кнопки загрузки-->
+<div class="row mt-3 align-items-end">
+	<div class="col-3">
+		<label for="formFile" class="form-label">Load book table(excel)</label>
+		<input id="file" class="form-control" type="file" />
+	</div>
+	<div class="col-2 offset-5 d-flex">
+		<button id="load" class="btn btn-primary me-4" type="button">Load</button>
+		<button class="btn btn-warning" type="button">Cancel</button>
+	</div>
+</div>
+<div class="row d-flex justify-content-start">
+	<!-- Таблица книг -->
+	<div class="table-responsive">
+		<table id="loadTable" class="bookPreviewTable table table-striped table-hover table-bordered mt-4">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Title</th>
+					<th scope="col">Description</th>
+					<th scope="col">PublishedOn</th>
+					<th scope="col">Category</th>
+					<th scope="col">ImageUrl</th>
+					<th scope="col">Author/s</th>
+					<th scope="col">Price</th>
+					<th scope="col">Color</th>
+					<th scope="col">BindingType</th>
+					<th scope="col">Condition</th>
+				</tr>
+			</thead>
+			<tbody class="table-group-divider"></tbody>
+		</table>
+	</div>
+</div>
+@section Scripts{<script src="~/js/loadPage/index.js" type="module"></script>}

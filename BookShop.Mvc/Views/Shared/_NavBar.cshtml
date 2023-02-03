@@ -1,0 +1,26 @@
+﻿		<nav class="navbar navbar-light" style="background-color: #e3f2fd">
+			<div class="container-fluid">
+				<ul class="nav nav-pills">
+					<li class="nav-item">
+						<a id="loadBooks" class="nav-link" asp-controller="Load" asp-action="Index">Load Books</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" asp-controller="Table" asp-action="Index">Table Books</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" asp-controller="Card" asp-action="Index">Card Books</a>
+					</li>
+					<li>
+						<form class="d-flex">
+							<input id="searchQuerry" class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" />
+							<button id="search" class="btn btn-outline-success" type="button">Искать</button>
+						</form>
+					</li>
+				</ul>
+				<!-- блок регистрации входа и отображения пользователя -->
+				<div>
+					<label class="form-label me-2"><span id="userName"></span> Роль: <span id="userRole"></span></label>
+					<button id="exit" type="button" class="btn btn-outline-info">Выход</button>
+				</div>
+			</div>
+		</nav>

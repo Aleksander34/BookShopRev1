@@ -1,0 +1,33 @@
+﻿		<!-- модальное окно регистрации -->
+		<div class="modal fade modal-lg" id="registrationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", "Регистрация")
+					<div class="modal-body">
+						<form id="RegitrationForm">
+							<div class="mb-3">
+								<label for="exampleInputEmail1" class="form-label">Имя пользователя</label>
+								<input name="Name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+								<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+							</div>
+							<div class="mb-3">
+								<label for="exampleInputPassword1" class="form-label">Пароль</label>
+								<input name="Password" type="password" class="form-control" id="exampleInputPassword1" />
+							</div>
+							<!-- <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Повтор пароля</label>
+                <input name="RepeatPassword" type="password" class="form-control" id="exampleInputPassword1" />
+              </div> -->
+							<div class="mb-3">
+								<label for="exampleInputPassword1" class="form-label">Роль</label>
+								<select name="Role" id="chartSelectRange">
+									<option value="1">Администратор</option>
+									<option value="0">Продавец</option>
+								</select>
+							</div>
+						</form>
+					</div>
+					@await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooter.cshtml", "Зарегистрироваться")
+				</div>
+			</div>
+		</div>
